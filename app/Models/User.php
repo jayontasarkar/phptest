@@ -18,4 +18,9 @@ class User extends Model
         'name',
         'comments',
     ];
+
+    public function avatar()
+    {
+        return asset("images/users/{$this->id}.jpg");
+    }
 }
