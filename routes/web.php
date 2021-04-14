@@ -18,4 +18,4 @@ Route::get('users/{id}', [UserController::class, 'show']);
 /**
  * add comments of an user
  */
-Route::post('users/{id}/comments', [UserController::class, 'comments']);
+Route::post('users/comments', [UserController::class, 'comments']);

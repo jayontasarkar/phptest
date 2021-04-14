@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserCommentRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -28,8 +29,12 @@ class UserController extends Controller
         return view('welcome', compact('user'));
     }
 
-    public function comments(User $user)
+    public function comments(UserCommentRequest $request)
     {
+        $user = User::find($request->id);
+        $user->comments .= "\n" . $request->comments;
+        $user->save();
 
+        return 'OK';
     }
 }
