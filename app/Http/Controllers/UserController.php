@@ -27,4 +27,9 @@ class UserController extends Controller
 
         return view('welcome', compact('user'));
     }
+
+    public function comments(User $user)
+    {
+
+    }
 }

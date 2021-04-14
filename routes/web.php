@@ -14,3 +14,8 @@ Route::get('/', [UserController::class, 'show']);
  * @param int $id
  */
 Route::get('users/{id}', [UserController::class, 'show']);
+
+/**
+ * add comments of an user
+ */
+Route::post('users/{id}/comments', [UserController::class, 'comments']);
