@@ -1,62 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# About PHPTest
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A very simple applicaton that initally creates user by database seeder. Users can only preview user info along with comments by providing user id as querystring or using a specific route. Any one can add comment of a specific user by providing user id, static password and comment. User can also create a comment by using a console command. The routes with parameters are documented below.
 
-## About Laravel
+<br/>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Installation Instruction
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+PHPTest is very easy to setup. Steps are given below:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+  1. clone the repository
+  2. Run composer install
+  3. create a database
+  4. copy .env.example to .env
+  5. update database name & credentials in .env file
+  6. run php artisan migrate
+  7. run php artisan db:seed
+```
 
-## Learning Laravel
+You are done in the easy steps. To run test suit: 
+```
+php artisan test or vendor/bin/phpunit
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<br/>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Routes & Console Commands
 
-## Laravel Sponsors
+## Preview user via querystring
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Preview user info along with comments. User id is passed through querysting. User info and comments are displayed into a blade view.
 
-### Premium Partners
+**URL** : `/?id=1`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+**Method** : `GET`
 
-## Contributing
+**Password Security required** : NO
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Example URL** http://phptest.test/?id=1
 
-## Code of Conduct
+<br/>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Preview user via params
 
-## Security Vulnerabilities
+Preview user info along with comments. User id is passed through request parameter. User info and comments are displayed into a blade view.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**URL** : `/users/{id}`
 
-## License
+**Method** : `GET`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Password Security required** : NO
+
+**Example URL** http://phptest.test/users/1
+
+<br/>
+
+## Create a new comment via http request
+
+Create a new comment of an user via http post request. Data can be sent either form request or json request payload. If user is not found or security password is not provided, system will throw an error.
+
+**URL** : `/users/comments/`
+
+**Method** : `POST`
+
+**Password Security required** : Yes
+
+**Data constraints**
+
+Provide user id, password and comment.
+
+```json
+{
+    "id": "[integer]",
+    "password": "[string]",
+    "comments": "[text]"
+}
+```
+
+**Data example** All fields must be sent.
+
+```json
+{
+    "id": 1,
+    "password": "720DF6C2482218518FA20FDC52D4DED7ECC043AB",
+    "comments": "Comment one"
+}
+```
+
+<br/>
+
+## Create a new comment via console command
+
+Create a new comment of an user via console command. User id and comment is sent as command params. No password is needed to create comment via console command. Below replace the USERID & COMMENT with original user id and comment.
+
+**COMMAND** : `php artisan comment:create USERID COMMENT`
+
+**Password Security required** : NO
+
+**Data constraints**
+
+Provide user id and comment.
+
+```json
+{
+    "id": "[integer]",
+    "comments": "[text]"
+}
+```
+
+**Data example** php artisan comment:create 1 "First Comment"
