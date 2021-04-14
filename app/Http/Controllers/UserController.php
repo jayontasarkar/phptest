@@ -29,6 +29,12 @@ class UserController extends Controller
         return view('welcome', compact('user'));
     }
 
+    /**
+     * store comment of an user
+     *
+     * @param UserCommentRequest $request
+     * @return string
+     */
     public function comments(UserCommentRequest $request)
     {
         $user = User::find($request->id);
